@@ -22,9 +22,8 @@ stages:
       name: app-cicd
     steps:
     - task: Docker@2
-      displayName: Build an image
       inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        tags: |
-          $(tag)
+        containerRegistry: 'dockerhub registry'
+        repository: 'sazalach/app-cicd'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
