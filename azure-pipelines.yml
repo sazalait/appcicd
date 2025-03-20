@@ -32,8 +32,8 @@ stages:
         sshEndpoint: 'ssh-webserver'
         runOptions: 'inline'
         inline: |
-          docker login -u "sazalach" -p "$(docker_pat)"
+          echo "$(docker_pat)" | docker login -u "sazalach" --password-stdin
                   docker pull sazalach/app-cicd:$(Build.BuildId)
-                  docker run -d -p 8080:80 --name my-app sazalach/app-cicd:$(Build.BuildId)
+                  docker run -d -p 8080:8080 --name my-app sazalach/app-cicd:$(Build.BuildId)
         readyTimeout: '20000'
     
