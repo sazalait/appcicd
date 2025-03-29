@@ -39,7 +39,7 @@ stages:
         cat nodeapp.yaml  # Show the file after modification
 
         # Ensure the updated file is applied
-        kubectl apply -f nodeapp.yaml -n default
+        # kubectl apply -f nodeapp.yaml -n default
       displayName: Debug & Deploy to AKS
     - task: Kubernetes@1
       displayName: Deploy to AKS
