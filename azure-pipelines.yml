@@ -27,7 +27,9 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: 'latest'
-  
+    - task: trivy@1
+      inputs:
+        version: 'latest'
     - task: Kubernetes@1
       displayName: Deploy to AKS
       inputs:
