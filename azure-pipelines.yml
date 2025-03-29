@@ -30,7 +30,10 @@ stages:
     - task: trivy@1
       inputs:
         version: 'latest'
-        image: docker.io/sazalach/app-cicd:latest
+        image: 'docker.io/sazalach/app-cicd:latest'
+        jsonOutput: true
+        severities: 'CRITICAL'
+
     - task: Kubernetes@1
       displayName: Deploy to AKS
       inputs:
