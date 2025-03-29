@@ -31,19 +31,25 @@ stages:
         tags: '$(tag)'  # Use Build ID as image tag
 
     - script: |
-        echo "Before Update:"
-        cat nodeapp.yaml  # Show the file before modification
-
+        tag="$(Build.BuildId)"
         echo "Updating Kubernetes YAML file with new image tag"
-        sed -i 's|image: sazalach/app-cicd:.*|image: sazalach/app-cicd:$(tag)|g' nodeapp.yaml
-
+        echo "Executing: sed -i 's|image: sazalach/app-cicd:.*|image: sazalach/app-cicd:$tag|g' nodeapp.yaml"
+        sed -i "s|image: sazalach/app-cicd:.*|image: sazalach/app-cicd:$tag|g" nodeapp.yaml
         echo "After Update:"
         cat nodeapp.yaml  # Show the file after modification
 
         # Ensure the updated file is applied
         kubectl apply -f nodeapp.yaml -n default
       displayName: Debug & Deploy to AKS
-
+    - task: Kubernetes@1
+      displayName: Deploy to AKS
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceEndpoint: 'aks-connect'
+        namespace: 'default'
+        command: 'apply'
+        useConfigurationFile: true
+        configuration: 'nodeapp.yaml'
 
 
 
