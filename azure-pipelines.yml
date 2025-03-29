@@ -8,9 +8,6 @@ trigger:
 resources:
 - repo: self
 
-variables:
-  tag: '$(Build.BuildId)'  # Generate a unique tag for each build
-
 stages:
 - stage: Build
   displayName: Build and Deploy
@@ -28,19 +25,6 @@ stages:
         repository: 'sazalach/app-cicd'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
-        tags: '$(tag)'  # Use Build ID as image tag
-
-    - script: |
-        tag="$(Build.BuildId)"
-        echo "Updating Kubernetes YAML file with new image tag"
-        echo "Executing: sed -i 's|image: sazalach/app-cicd:.*|image: sazalach/app-cicd:$tag|g' nodeapp.yaml"
-        sed -i "s|image: sazalach/app-cicd:.*|image: sazalach/app-cicd:$tag|g" nodeapp.yaml
-        echo "After Update:"
-        cat nodeapp.yaml  # Show the file after modification
-
-        # Ensure the updated file is applied
-        # kubectl apply -f nodeapp.yaml -n default
-      displayName: Debug & Deploy to AKS
     - task: Kubernetes@1
       displayName: Deploy to AKS
       inputs:
