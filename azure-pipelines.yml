@@ -9,25 +9,34 @@ resources:
 - repo: self
 
 variables:
-  tag: '$(Build.BuildId)'
+  tag: '$(Build.BuildId)'  # Generate a unique tag for each build
 
 stages:
 - stage: Build
-  displayName: Build image
+  displayName: Build and Deploy
   jobs:
   - job: Build
-    displayName: Build
+    displayName: Build and Deploy Job
     pool:
       vmImage: ubuntu-latest
-      name: app-cicd
     steps:
     - task: Docker@2
+      displayName: Build and Push Docker Image
       inputs:
-        containerRegistry: 'dockerhub registry'
+        containerRegistry: 'dockerhub registry'  # Your Docker Hub/Azure Container Registry connection
         repository: 'sazalach/app-cicd'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
+        tags: '$(tag)'  # Use Build ID as image tag
+
+    - script: |
+        echo "Updating Kubernetes YAML file with new image tag"
+        sed -i 's|image: sazalach/app-cicd:.*|image: sazalach/app-cicd:$(tag)|g' nodeapp.yaml
+        cat nodeapp.yaml  # Debug: Print updated YAML
+      displayName: Update Kubernetes YAML with Image Tag
+
     - task: Kubernetes@1
+      displayName: Deploy to AKS
       inputs:
         connectionType: 'Kubernetes Service Connection'
         kubernetesServiceEndpoint: 'aks-connect'
@@ -35,5 +44,6 @@ stages:
         command: 'apply'
         useConfigurationFile: true
         configuration: 'nodeapp.yaml'
+
 
 
