@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "2"
+  creationTimestamp: "2025-03-28T02:03:07Z"
+  generation: 2
+  labels:
+    app: nodeapp
+  name: nodeapp
+  namespace: default
+  resourceVersion: "649535"
+  uid: 30db156e-4376-49ce-83da-9033282455da
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nodeapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nodeapp
+    spec:
+      containers:
+      - image: acrkuber.azurecr.io/nodeapp:02
+        imagePullPolicy: IfNotPresent
+        name: nodeapp
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2025-03-28T02:03:13Z"
+    lastUpdateTime: "2025-03-28T02:03:13Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2025-03-28T02:03:07Z"
+    lastUpdateTime: "2025-03-28T03:21:00Z"
+    message: ReplicaSet "nodeapp-5664f84ffc" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
