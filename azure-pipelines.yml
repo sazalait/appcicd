@@ -34,6 +34,6 @@ stages:
         namespace: 'default'
         command: 'apply'
         useConfigurationFile: true
-        configurationType: 'inline'
-        inline: '''$(Build.SourcesDirectory)/nodeapp.yaml'''
+        configuration: 'nodeapp.yaml'
+
 
