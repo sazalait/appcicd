@@ -19,6 +19,7 @@ stages:
     displayName: Build and Deploy Job
     pool:
       vmImage: ubuntu-latest
+      name: app-cicd
     steps:
     - task: Docker@2
       displayName: Build and Push Docker Image
