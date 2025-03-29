@@ -30,7 +30,7 @@ spec:
         app: nodeapp
     spec:
       containers:
-      - image: sazalach/appcicd:17
+      - image: sazalach/appcicd:latest
         imagePullPolicy: IfNotPresent
         name: nodeapp
         resources: {}
