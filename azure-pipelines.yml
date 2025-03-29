@@ -27,4 +27,13 @@ stages:
         repository: 'sazalach/app-cicd'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
-    
+    - task: Kubernetes@1
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceEndpoint: 'aks-connect'
+        namespace: 'default'
+        command: 'apply'
+        useConfigurationFile: true
+        configurationType: 'inline'
+        inline: '''$(Build.SourcesDirectory)/nodeapp.yaml'''
+
