@@ -33,11 +33,11 @@ stages:
         image: 'docker.io/sazalach/app-cicd:latest'
         jsonOutput: true
         severities: 'CRITICAL'
-    - task: PublishPipelineArtifact@1
+    - task: Npm@1
       inputs:
-        targetPath: '$(Pipeline.Workspace)'
-        artifact: 'azureartifact'
-        publishLocation: 'pipeline'
+        command: 'publish'
+        publishRegistry: 'useFeed'
+        publishFeed: 'd703616d-0f11-4461-8597-a0356d381677/923f7294-273c-4446-8ac8-c20286901632'
     - task: Kubernetes@1
       displayName: Deploy to AKS
       inputs:
