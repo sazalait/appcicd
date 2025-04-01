@@ -33,6 +33,7 @@ stages:
         image: 'docker.io/sazalach/app-cicd:latest'
         jsonOutput: true
         tableOutput: true
+        severities: 'CRITICAL'
 
     - task: Kubernetes@1
       displayName: Deploy to AKS
